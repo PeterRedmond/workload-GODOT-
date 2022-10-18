@@ -1,0 +1,372 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://src/Objects/ThermometerStyleTube.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/Objects/Light.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/Objects/Button.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/World.gd" type="Script" id=4]
+[ext_resource path="res://src/Objects/MovingBall.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Environment" id=1]
+background_mode = 4
+glow_enabled = true
+glow_strength = 0.8
+glow_blend_mode = 0
+glow_hdr_threshold = 1.2
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.247918, 0.169019, 0.752082, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.615686, 0.964706, 0.992157, 1 )
+border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.247918, 0.169019, 0.752082, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.615686, 0.964706, 0.992157, 1 )
+border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0, 0, 0, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.980392, 0.980392, 0.317647, 1 )
+
+[sub_resource type="DynamicFontData" id=7]
+font_path = "res://Assets/Roboto-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=8]
+size = 50
+font_data = SubResource( 7 )
+
+[sub_resource type="DynamicFontData" id=9]
+font_path = "res://Assets/Roboto-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=10]
+size = 50
+font_data = SubResource( 9 )
+
+[sub_resource type="DynamicFontData" id=11]
+font_path = "res://Assets/Roboto-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=12]
+size = 40
+font_data = SubResource( 11 )
+
+[sub_resource type="StyleBoxFlat" id=13]
+bg_color = Color( 0.345098, 0.917647, 0.415686, 1 )
+
+[sub_resource type="DynamicFontData" id=14]
+font_path = "res://Assets/Roboto-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=15]
+size = 40
+font_data = SubResource( 14 )
+
+[sub_resource type="StyleBoxFlat" id=16]
+bg_color = Color( 0.917647, 0.345098, 0.345098, 1 )
+
+[sub_resource type="DynamicFontData" id=17]
+font_path = "res://Assets/Roboto-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=18]
+size = 40
+font_data = SubResource( 17 )
+
+[node name="World" type="Node2D"]
+script = ExtResource( 4 )
+level_time = 30
+min_time_to_color_question = 7.0
+max_time_to_color_question = 10.0
+min_time_to_number_question = 10.0
+max_time_to_number_question = 15.0
+button_colors = {
+"Green": Color( 0, 1, 0, 1 ),
+"Red": Color( 1, 0, 0, 1 ),
+"Yellow": Color( 1, 1, 0, 1 )
+}
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
+
+[node name="MovingBall" parent="." instance=ExtResource( 5 )]
+min_time_to_stop = 5.0
+max_time_to_stop = 10.0
+
+[node name="Lights" type="Node2D" parent="."]
+
+[node name="Light1" parent="Lights" instance=ExtResource( 2 )]
+position = Vector2( 360, 125 )
+min_time_to_light = 8.0
+max_time_to_light = 10.0
+
+[node name="Light2" parent="Lights" instance=ExtResource( 2 )]
+position = Vector2( 664, 125 )
+min_time_to_light = 6.0
+max_time_to_light = 8.0
+
+[node name="Light3" parent="Lights" instance=ExtResource( 2 )]
+position = Vector2( 512, 125 )
+min_time_to_light = 6.0
+max_time_to_light = 8.0
+
+[node name="Buttons" type="Node2D" parent="."]
+
+[node name="Button1" parent="Buttons" instance=ExtResource( 3 )]
+
+[node name="Button2" parent="Buttons" instance=ExtResource( 3 )]
+margin_left = 594.0
+margin_right = 654.0
+button_color = "Green"
+
+[node name="Button3" parent="Buttons" instance=ExtResource( 3 )]
+margin_left = 482.0
+margin_top = 480.0
+margin_right = 542.0
+margin_bottom = 520.0
+button_color = "Yellow"
+
+[node name="Tubes" type="Node2D" parent="."]
+
+[node name="ThermometerStyleTube" parent="Tubes" instance=ExtResource( 1 )]
+margin_left = 214.0
+margin_top = 125.0
+margin_right = 254.0
+margin_bottom = 475.0
+fill_per_unit_time = 1.0
+unit_time = 0.5
+min_value = 20.0
+max_value = 80.0
+
+[node name="ThermometerStyleTube" parent="Tubes/ThermometerStyleTube" index="0"]
+custom_styles/fg = SubResource( 2 )
+custom_styles/bg = SubResource( 3 )
+
+[node name="ThermometerStyleTube2" parent="Tubes" instance=ExtResource( 1 )]
+margin_left = 810.0
+margin_top = 125.0
+margin_right = 850.0
+margin_bottom = 475.0
+fill_per_unit_time = 2.0
+unit_time = 0.5
+min_value = 10.0
+max_value = 90.0
+
+[node name="ThermometerStyleTube" parent="Tubes/ThermometerStyleTube2" index="0"]
+custom_styles/fg = SubResource( 4 )
+custom_styles/bg = SubResource( 5 )
+
+[node name="Text" type="Label" parent="."]
+margin_left = 362.0
+margin_top = 175.0
+margin_right = 662.0
+margin_bottom = 250.0
+rect_min_size = Vector2( 0, 75 )
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = SubResource( 8 )
+custom_colors/font_color = Color( 0, 1, 0.180392, 1 )
+text = "RED"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextLineEdit" type="LineEdit" parent="."]
+margin_left = 362.0
+margin_top = 275.0
+margin_right = 662.0
+margin_bottom = 350.0
+custom_fonts/font = SubResource( 10 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Number" type="Label" parent="."]
+margin_left = 362.0
+margin_top = 375.0
+margin_right = 662.0
+margin_bottom = 450.0
+rect_min_size = Vector2( 0, 75 )
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = SubResource( 8 )
+text = "1 + 2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LevelEnd" type="Popup" parent="."]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1024.0
+margin_bottom = 600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="LevelEnd"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="ScoreLabel" type="Label" parent="LevelEnd"]
+margin_left = 100.0
+margin_top = 184.0
+margin_right = 400.0
+margin_bottom = 284.0
+custom_fonts/font = SubResource( 12 )
+text = "SCORE : 99999"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WaterOverFlow" type="Label" parent="LevelEnd"]
+margin_left = 500.0
+margin_top = 30.0
+margin_right = 914.0
+margin_bottom = 90.0
+custom_fonts/font = SubResource( 12 )
+text = "Water Overflow : 99999"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WaterUnderFlow" type="Label" parent="LevelEnd"]
+margin_left = 500.0
+margin_top = 90.0
+margin_right = 946.0
+margin_bottom = 150.0
+custom_fonts/font = SubResource( 12 )
+text = "Water UnderFlow : 99999"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BallStopped" type="Label" parent="LevelEnd"]
+margin_left = 500.0
+margin_top = 150.0
+margin_right = 946.0
+margin_bottom = 210.0
+custom_fonts/font = SubResource( 12 )
+text = "Ball stopped : 99999"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LightsOn" type="Label" parent="LevelEnd"]
+margin_left = 500.0
+margin_top = 210.0
+margin_right = 946.0
+margin_bottom = 270.0
+custom_fonts/font = SubResource( 12 )
+text = "Lights On  : 99999"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WordQuestion" type="Label" parent="LevelEnd"]
+margin_left = 500.0
+margin_top = 270.0
+margin_right = 946.0
+margin_bottom = 330.0
+custom_fonts/font = SubResource( 12 )
+text = "Word Question : 99999"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NumberQuestion" type="Label" parent="LevelEnd"]
+margin_left = 500.0
+margin_top = 330.0
+margin_right = 946.0
+margin_bottom = 390.0
+custom_fonts/font = SubResource( 12 )
+text = "Number Question : 99999"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartButton" type="Button" parent="LevelEnd"]
+margin_left = 187.0
+margin_top = 400.0
+margin_right = 487.0
+margin_bottom = 460.0
+custom_styles/normal = SubResource( 13 )
+custom_fonts/font = SubResource( 15 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Restart"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitButton" type="Button" parent="LevelEnd"]
+margin_left = 537.0
+margin_top = 400.0
+margin_right = 837.0
+margin_bottom = 460.0
+custom_styles/normal = SubResource( 16 )
+custom_fonts/font = SubResource( 18 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LevelTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="NumberTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ColorTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="text_changed" from="TextLineEdit" to="." method="_on_TextLineEdit_text_changed"]
+[connection signal="pressed" from="LevelEnd/StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="LevelEnd/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="timeout" from="LevelTimer" to="." method="_on_LevelTimer_timeout"]
+[connection signal="timeout" from="NumberTimer" to="." method="_on_NumberTimer_timeout"]
+[connection signal="timeout" from="ColorTimer" to="." method="_on_ColorTimer_timeout"]
+
+[editable path="Tubes/ThermometerStyleTube"]
+[editable path="Tubes/ThermometerStyleTube2"]

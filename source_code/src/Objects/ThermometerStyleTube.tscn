@@ -1,0 +1,208 @@
+[gd_scene load_steps=8 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+export(float, 0, 100) var fill_per_unit_time
+export(float) var unit_time
+export(float, 0, 100) var min_value
+export(float, 0, 100) var max_value
+export(bool) var tap_button_pressed
+var overflow_time = 0
+var start_time = 0
+var end_time = 0
+var timer_started = false
+
+func _ready():
+	$Timer.start(unit_time)
+	if min_value > max_value:
+		var temp = min_value
+		min_value = max_value
+		max_value = temp
+	var min_y = $Button.rect_size.y + 10 + ( min_value * $ThermometerStyleTube.rect_size.x / 100 )
+	var max_y = $Button.rect_size.y + 10 + ( max_value * $ThermometerStyleTube.rect_size.x / 100 )
+	var width_x = $ThermometerStyleTube.rect_size.y
+	
+	$MinLine2D.points = [Vector2(0, min_y), Vector2(width_x, min_y)]
+	$MaxLine2D.points = [Vector2(0, max_y), Vector2(width_x, max_y)]
+
+
+func _on_Timer_timeout():
+	if tap_button_pressed:
+		$ThermometerStyleTube.value += fill_per_unit_time
+		if $ThermometerStyleTube.value > max_value:
+			$ThermometerStyleTube/AnimationPlayer.play(\"Blink\")
+			if not timer_started:
+				start_timer()
+		else:
+			if timer_started:
+				stop_timer()
+				$ThermometerStyleTube/AnimationPlayer.play(\"Idle\")
+	else:
+		$ThermometerStyleTube.value -= fill_per_unit_time
+		if $ThermometerStyleTube.value < min_value:
+			$ThermometerStyleTube/AnimationPlayer.play(\"Blink\")
+			if not timer_started:
+				start_timer()
+		else:
+			if timer_started:
+				$ThermometerStyleTube/AnimationPlayer.play(\"Idle\")
+				stop_timer()
+
+func _on_Button_toggled(button_pressed):
+	tap_button_pressed = button_pressed
+
+
+func start_timer():
+	start_time = OS.get_ticks_msec()
+	timer_started = true
+
+func stop_timer():
+	end_time = OS.get_ticks_msec()
+	if tap_button_pressed:
+		Autoload.water_underflow += (end_time - start_time)
+	else:
+		Autoload.water_overflow += (end_time - start_time)
+	timer_started = false
+
+func time_up():
+	if timer_started:
+		end_time = OS.get_ticks_msec()
+		if tap_button_pressed:
+			Autoload.water_underflow += (end_time - start_time)
+		else:
+			Autoload.water_overflow += (end_time - start_time)
+"
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.247918, 0.169019, 0.752082, 1 )
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.615686, 0.964706, 0.992157, 1 )
+border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="Animation" id=4]
+resource_name = "Blink"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.984314, 0.584314, 0.584314, 0.588235 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:custom_styles/fg:bg_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0.215686, 1, 1 ), Color( 1, 0.027451, 0, 1 ), Color( 0, 0.215686, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Idle"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:custom_styles/fg:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.247918, 0.169019, 0.752082, 1 ), Color( 0.247918, 0.169019, 0.752082, 1 ), Color( 0.247918, 0.169019, 0.752082, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.317647, 0.27451, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0, 1, 0.0470588, 1 )
+
+[node name="ThermometerStyleTube" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 350 )
+script = SubResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ThermometerStyleTube" type="ProgressBar" parent="."]
+margin_top = 360.0
+margin_right = 300.0
+margin_bottom = 400.0
+rect_rotation = -90.0
+custom_styles/fg = SubResource( 2 )
+custom_styles/bg = SubResource( 3 )
+value = 50.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ThermometerStyleTube"]
+anims/Blink = SubResource( 4 )
+anims/Idle = SubResource( 5 )
+
+[node name="Button" type="Button" parent="."]
+margin_left = -5.0
+margin_right = 45.0
+margin_bottom = 50.0
+focus_mode = 0
+custom_styles/hover = SubResource( 6 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/normal = SubResource( 6 )
+toggle_mode = true
+enabled_focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="MaxLine2D" type="Line2D" parent="."]
+points = PoolVector2Array( 0, 100, 40, 100 )
+width = 5.0
+default_color = Color( 1, 0, 0, 1 )
+
+[node name="MinLine2D" type="Line2D" parent="."]
+points = PoolVector2Array( 0, 300, 40, 300 )
+width = 5.0
+default_color = Color( 1, 0, 0, 1 )
+
+[connection signal="toggled" from="Button" to="." method="_on_Button_toggled"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
