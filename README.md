@@ -1,2 +1,2 @@
 # workload (GODOT)
-Game for workload simulation writen in GODOT game platform
+Game for workload simulation using GODOT game platform
